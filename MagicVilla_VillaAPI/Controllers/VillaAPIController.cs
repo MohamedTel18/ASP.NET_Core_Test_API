@@ -89,7 +89,7 @@ namespace MagicVilla_VillaAPI.Controllers
             if (Id == 0)
                 return BadRequest();
 
-            var villa = _db.Villas.FirstOrDefault(leati => leati.Id == Id);
+            var villa = _db.Villas.FirstOrDefault(le => le.Id == Id);
             if (villa == null)
                 return NotFound();
 
