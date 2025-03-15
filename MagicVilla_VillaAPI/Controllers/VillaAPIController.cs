@@ -1,6 +1,7 @@
 ﻿using MagicVilla_VillaAPI.Data;
 using MagicVilla_VillaAPI.models;
 using MagicVilla_VillaAPI.models.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +11,7 @@ namespace MagicVilla_VillaAPI.Controllers
 {
     [Route("api/VillaAPI")]
     [ApiController]
-    
+    [Authorize]
     public class VillaAPIController : ControllerBase
     {
         private readonly ApplicationDbContest _db;
@@ -52,9 +53,8 @@ namespace MagicVilla_VillaAPI.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public ActionResult<VillaDTO> Create([FromBody]VillaDTO villaDTO)
+        public ActionResult<VillaDTO> Create([FromBody] VillaDTO villaDTO)
         {
-            
             if (villaDTO == null)
                 return BadRequest();
 
@@ -65,18 +65,19 @@ namespace MagicVilla_VillaAPI.Controllers
             {
                 Id = villaDTO.Id,
                 Name = villaDTO.Name,
-                Details= villaDTO.Details,
-                Amenty= villaDTO.Amenty,
-                Rate= villaDTO.Rate,
-                Occuppency= villaDTO.Occuppency,
-                sqft= villaDTO.sqft,
-                ImageUrl=villaDTO.ImageUrl
+                Details = villaDTO.Details,
+                Amenty = villaDTO.Amenty,
+                Rate = villaDTO.Rate,
+                Occuppency = villaDTO.Occuppency,
+                sqft = villaDTO.sqft,
+                ImageUrl = villaDTO.ImageUrl // Ensure this property is set
             };
             _db.Villas.Add(model);
             _db.SaveChanges();
 
             return CreatedAtRoute("GetVilla", new { Id = villaDTO.Id }, villaDTO);
         }
+
 
 
 

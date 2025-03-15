@@ -1,9 +1,10 @@
 ﻿using MagicVilla_VillaAPI.models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace MagicVilla_VillaAPI.Data
 {
-    public class ApplicationDbContest:DbContext
+    public class ApplicationDbContest:IdentityDbContext<AppUser>
     {
         public ApplicationDbContest(DbContextOptions<ApplicationDbContest> options) 
             :base(options)
@@ -14,6 +15,10 @@ namespace MagicVilla_VillaAPI.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Add this line FIRST
+            base.OnModelCreating(modelBuilder); // Configures Identity tables (required!)
+
+            // Your Villa seed data
             modelBuilder.Entity<Villa>().HasData(
             new Villa()
             {
@@ -38,7 +43,7 @@ namespace MagicVilla_VillaAPI.Data
                 ImageUrl = "",
                 Amenty = "Amenty 2",
                 CreatedDate = new DateTime(2022, 2, 10)
-            }); 
+            });
         }
     }
 }
